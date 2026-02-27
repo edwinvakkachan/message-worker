@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  messageworker:
+    build: .
+    container_name: messageworker
+    restart: "no"
+
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
+
