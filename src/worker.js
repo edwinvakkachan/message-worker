@@ -14,7 +14,7 @@ FROM app_message_queue
 WHERE status = 'pending'
   AND scheduled_at <= NOW()
 ORDER BY created_at ASC, id ASC
-LIMIT 20
+LIMIT 25
 FOR UPDATE SKIP LOCKED
     `);
 
@@ -29,7 +29,7 @@ FOR UPDATE SKIP LOCKED
 
         // Dispatch based on target
         if (msg.target === "telegram") {
-          await delay(2000,true);
+          await delay(1200,true);
           console.log(msg.payload.message)
           await sendTelegramMessage(msg.payload.message);
         }
@@ -71,7 +71,7 @@ FOR UPDATE SKIP LOCKED
   }
 }
 
-export async function startWorker(intervalMs = 10000) {
+export async function startWorker(intervalMs = 5000) {
   console.log("🚀 Message Worker started...");
 
   while (true) {
