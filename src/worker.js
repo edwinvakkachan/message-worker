@@ -29,7 +29,7 @@ async function processBatch() {
 
         // Dispatch based on target
         if (msg.target === "telegram") {
-          await delay(1000,true);
+          await delay(2000,true);
           console.log(msg.payload.message)
           await sendTelegramMessage(msg.payload.message);
         }
