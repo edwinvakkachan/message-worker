@@ -10,12 +10,12 @@ async function processBatch() {
 
     const { rows } = await client.query(`
       SELECT *
-      FROM app_message_queue
-      WHERE status = 'pending'
-        AND scheduled_at <= NOW()
-      ORDER BY created_at
-      LIMIT 20
-      FOR UPDATE SKIP LOCKED
+FROM app_message_queue
+WHERE status = 'pending'
+  AND scheduled_at <= NOW()
+ORDER BY created_at ASC, id ASC
+LIMIT 20
+FOR UPDATE SKIP LOCKED
     `);
 
     for (const msg of rows) {
@@ -71,7 +71,11 @@ async function processBatch() {
   }
 }
 
-export function startWorker(intervalMs = 10000) {
+export async function startWorker(intervalMs = 10000) {
   console.log("🚀 Message Worker started...");
-  setInterval(processBatch, intervalMs);
+
+  while (true) {
+    await processBatch();
+    await delay(intervalMs);
+  }
 }
